@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>App Name: A Coding Project By John Winko</title>
+    <title>Loan Shark: A Coding Project By John Winko</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,7 +25,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><img src="img/JW_white.svg" width="30" height="24"
-                    class="d-inline-block align-text-top">&nbsp; The App</a>
+                    class="d-inline-block align-text-top">&nbsp; Loan Shark</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -42,7 +42,7 @@
                         <a class="nav-link active" aria-current="page" href="code.html">The Code</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Git Repo</a>
+                        <a class="nav-link" href="https://github.com/john-winko/CFBC_LoanShark">Git Repo</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" target="_blank" href="https://www.johnwinko.com">About</a>
@@ -55,20 +55,107 @@
     <!-- === Main Section -->
     <main class="flex-shrink-0">
         <div class="container py-5 px-5 mt-5">
-            <h2 class="border-1 border-bottom border-dark">The Code for APP NAME.</h2>
+            <h2 class="border-1 border-bottom border-dark">The Code for Loan Shark.</h2>
             <div class="row row-cols-1 row-cols-md-2 pt-1">
                 <div class="col-lg-8">
                     <pre class="line-numbers"><code class="language-javascript">
-                        // Call Hello World
-                        function HelloWorld(){
-                            alert("hello World");
-                        }
+                        // document element by ID shortcut
+let $ = function (id) {
+    return document.getElementById(id);
+}
+
+// format currency to US Dollars
+let usd = function (num) {
+    let formatter = new Intl.NumberFormat('en-US', {
+        style: "currency",
+        currency: 'USD',
+        minimumFractionDigits: 2
+    });
+    return formatter.format(num);
+}
+
+// Entry point from button click
+function calculateMortgage() {
+    resetVisibility();
+    let loanDetails = getLoanDetails();
+    resetVisibility(false);
+    showDetails(loanDetails);
+}
+
+// Display the results on screen
+function showDetails(loanDetails) {
+    $("monthlyPayment").innerHTML = usd(loanDetails.monthlyPayment);
+    $("totalPrincipal").innerHTML = usd(loanDetails.amount);
+    $("totalInterest").innerHTML = usd(loanDetails.totalInterest);
+    $("totalCost").innerHTML = usd(loanDetails.totalCost);
+
+    let month = 1;
+    let tableBody = $("resultTableBody");
+    tableBody.innerHTML = "";
+    let rowTemplate = $("rowTemplate");
+    let balance = loanDetails.amount;
+    let paidInterest = 0;
+
+    while (month <= loanDetails.term) {
+        let interest = balance * (loanDetails.interestRate / 1200);
+        paidInterest += interest;
+        balance -= (loanDetails.monthlyPayment - interest).toFixed(2);
+        const rowData = document.importNode(rowTemplate.content, true);
+        rows = rowData.querySelectorAll("td");
+        rows[0].textContent = month;
+        rows[1].textContent = usd(loanDetails.monthlyPayment);
+        rows[2].textContent = usd(loanDetails.monthlyPayment - interest);
+        rows[3].textContent = usd(interest);
+        rows[4].textContent = usd(paidInterest);
+        rows[5].textContent = usd(balance);
+
+        tableBody.appendChild(rowData);
+        month++;
+    }
+    // TODO: add the edge case for rounding error 
+    // sync up to last payment (over/under by a few cents)
+}
+
+// Gather loan details from page and store into object
+function getLoanDetails() {
+    let loanDetails = {};
+    loanDetails.amount = Number.parseFloat($("loanAmount").value);
+    loanDetails.term = Number.parseFloat($("termMonths").value);
+    loanDetails.interestRate = Number.parseFloat($("interestRate").value);
+
+    let divisor = loanDetails.amount * (loanDetails.interestRate / 1200);
+    let dividend = (1 - (1 + loanDetails.interestRate / 1200) ** (-loanDetails.term));
+    loanDetails.monthlyPayment = (divisor / dividend).toFixed(2);
+
+    loanDetails.totalCost = loanDetails.monthlyPayment * loanDetails.term;
+    loanDetails.totalInterest = loanDetails.totalCost - loanDetails.amount;
+
+    return loanDetails;
+}
+
+function resetVisibility(hide = true) {
+    if (hide) {
+        document.getElementById("resultTable").classList.add("invisible");
+        document.getElementById("errorMessage").classList.add("invisible");
+        document.getElementById("monthlyPayment").classList.add("invisible");
+        document.getElementById("totalPrincipal").classList.add("invisible");
+        document.getElementById("totalInterest").classList.add("invisible");
+        document.getElementById("totalCost").classList.add("invisible");
+    } else {
+        document.getElementById("resultTable").classList.remove("invisible");
+        document.getElementById("monthlyPayment").classList.remove("invisible");
+        document.getElementById("totalPrincipal").classList.remove("invisible");
+        document.getElementById("totalInterest").classList.remove("invisible");
+        document.getElementById("totalCost").classList.remove("invisible");
+    }
+}
+
                     </code></pre>
                 </div>
                 <div class="col-lg-4">
-                    <p>The code is structured in one function</p>
-                    <h5>Hello World</h5>
-                    <p>Hello World is a function that displays an alert with a message of "Hello World"</p>
+                    <p>The code is structured in multiple functions</p>
+                    <h5></h5>
+                    <p></p>
                 </div>
             </div>
         </div>
@@ -90,22 +177,22 @@
                 <div class="col d-flex align-items-center justify-content-center justify-content-lg-end">
                     <div class="row">
                         <div class="col social">
-                            <a href="#" target="_blank">
+                            <a href="https://www.linkedin.com/in/john-winko/" target="_blank">
                                 <i class="fab fa-linkedin fa-2x"></i>
                             </a>
                         </div>
                         <div class="col social">
-                            <a href="#" target="_blank">
+                            <a href="https://github.com/john-winko" target="_blank">
                                 <i class="fab fa-github fa-2x"></i>
                             </a>
                         </div>
                         <div class="col social">
-                            <a href="#" target="_blank">
+                            <a href="https://twitter.com/JohnWinko" target="_blank">
                                 <i class="fab fa-twitter fa-2x"></i>
                             </a>
                         </div>
                         <div class="col social">
-                            <a href="#" target="_blank">
+                            <a href="https://www.facebook.com/john.winko" target="_blank">
                                 <i class="fab fa-youtube fa-2x"></i>
                             </a>
                         </div>

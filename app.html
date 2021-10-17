@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>App Name: A Coding Project By John Winko</title>
+    <title>Loan Shark: A Coding Project By John Winko</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +23,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><img src="img/JW_white.svg" width="30" height="24"
-                    class="d-inline-block align-text-top">&nbsp; The App</a>
+                    class="d-inline-block align-text-top">&nbsp; Loan Shark</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -40,7 +40,7 @@
                         <a class="nav-link" href="code.html">The Code</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Git Repo</a>
+                        <a class="nav-link" href="https://github.com/john-winko/CFBC_LoanShark">Git Repo</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" target="_blank" href="https://www.johnwinko.com">About</a>
@@ -53,7 +53,75 @@
     <!-- === Main Section -->
     <main class="flex-shrink-0">
         <div class="container">
-
+            <div class="row">
+                <div class="col-md-4 pe-md-5 mt-2">
+                    <!-- Inputs -->
+                    <form class="row border h-100">
+                        <label for="loanAmount" class="col-6 p-2 d-flex align-items-center">Loan Amount
+                        </label>
+                        <div class="col-md-6 p-2">
+                            <input type="number" class="form-control" id="loanAmount" placeholder="25000" value="25000">
+                        </div>
+                        <label for="termMonths" class="col-6 p-2 d-flex align-items-center">Term (Months)
+                        </label>
+                        <div class="col-md-6 p-2">
+                            <input type="number" class="form-control" id="termMonths" placeholder="60" value="60">
+                        </div>
+                        <label for="interestRate" class="col-6 p-2 d-flex align-items-center">Interest Rate</label>
+                        <div class="col-md-6 p-2">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="interestRate" placeholder="6.5" value="6.5">
+                                <span class="input-group-text" id="inputGroupSuffix1">%</span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <p id="errorMessage" class="bg-warning text-danger fw-bolder invisible">
+                                Error message
+                            </p>
+                        </div>
+                        <div class="col-12 d-flex justify-content-end p-3 mt-3">
+                            <button type="button" class="btn btn-primary" id="calculate"
+                                onclick="calculateMortgage()">Calculate</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Simple Output -->
+                <div class="col-md-8 mt-2">
+                    <div class="border h-100">
+                        <div class="row ">
+                            <div class="col-12 d-flex justify-content-center m-2">
+                                <h1>Your Monthly Payments</h1>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center m-2 pb-3">
+                                <h2 id="monthlyPayment" class="">$333.33</h2>
+                            </div>
+                            <label class="col-md-7 ms-md-4">Total Principal</label>
+                            <label class="col-md-4 me-md-4 invisible" id="totalPrincipal">$$$</label>
+                            <label class="col-md-7 ms-md-4">Total Interest</label>
+                            <label class="col-md-4 me-md-4 invisible" id="totalInterest">$$$</label>
+                            <label class="col-md-7 ms-md-4">Total Cost</label>
+                            <label class="col-md-4 me-md-4 invisible" id="totalCost">$$$</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Tabulated Output -->
+            <div class="row mt-3">
+                <table id="resultTable" class="table-responsive table table-success table-striped invisible">
+                    <thead>
+                        <tr>
+                            <th scope="col">Month</th>
+                            <th scope="col">Payment</th>
+                            <th scope="col">Principal</th>
+                            <th scope="col">Interest</th>
+                            <th scope="col">Total Interest</th>
+                            <th scope="col">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultTableBody" >
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 
@@ -63,9 +131,9 @@
             <div class="row row-cols-1 row-cols-lg-3 gy-3">
                 <div
                     class="col order-last order-lg-first text-light d-flex justify-content-center justify-content-lg-start">
-                    <div class="clickable"><span class="text-muted">&copy;2021 </span>John Winko | john.winko@gmail.com 
+                    <div class="clickable"><span class="text-muted">&copy;2021 </span>John Winko | john.winko@gmail.com
                         <i onclick="navigator.clipboard.writeText('john.winko@gmail.com');"
-                                class="fa fa-solid fa-copy "></i></div>
+                            class="fa fa-solid fa-copy "></i></div>
                 </div>
                 <div class="col d-flex align-items-center justify-content-center">
                     <img src="img/JW_Logo_white.svg" alt="John Winko Logo" height="46">
@@ -73,22 +141,22 @@
                 <div class="col d-flex align-items-center justify-content-center justify-content-lg-end">
                     <div class="row">
                         <div class="col social">
-                            <a href="#" target="_blank">
+                            <a href="https://www.linkedin.com/in/john-winko/" target="_blank">
                                 <i class="fab fa-linkedin fa-2x"></i>
                             </a>
                         </div>
                         <div class="col social">
-                            <a href="#" target="_blank">
+                            <a href="https://github.com/john-winko" target="_blank">
                                 <i class="fab fa-github fa-2x"></i>
                             </a>
                         </div>
                         <div class="col social">
-                            <a href="#" target="_blank">
+                            <a href="https://twitter.com/JohnWinko" target="_blank">
                                 <i class="fab fa-twitter fa-2x"></i>
                             </a>
                         </div>
                         <div class="col social">
-                            <a href="#" target="_blank">
+                            <a href="https://www.facebook.com/john.winko" target="_blank">
                                 <i class="fab fa-youtube fa-2x"></i>
                             </a>
                         </div>
@@ -97,6 +165,16 @@
             </div>
         </div>
     </footer>
+    <template id="rowTemplate">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </template>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
